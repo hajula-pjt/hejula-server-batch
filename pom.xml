@@ -11,6 +11,7 @@
 	<groupId>com.hejula.server.batch</groupId>
 	<artifactId>hejula-server-batch</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>hejula-server-batch</name>
 	<description>Hejula Server Batch</description>
 	<properties>
@@ -65,6 +66,16 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
 			</plugin>
 		</plugins>
 	</build>

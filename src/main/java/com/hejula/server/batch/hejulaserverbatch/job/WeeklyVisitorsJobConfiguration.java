@@ -25,6 +25,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * 일주일간의 숙박 현황 통계 job
+ *
+ * @author jooyeon
+ * @since 2021.08.23
+ */
+
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -35,11 +42,11 @@ public class WeeklyVisitorsJobConfiguration {
     private final EntityManagerFactory entityManagerFactory;
     private final DailyVisitorsRepository dailyVisitorsRepository;
 
-    private int chunkSize = 10;
+    private int chunkSize = 100;
 
     @Bean
     public Job weeklyVisitorsJob(){
-        return jobBuilderFactory.get("weeklyVisitorsJob5")
+        return jobBuilderFactory.get("weeklyVisitorsJob" + new Date().toString())
                 .start(deleteDailyVisitor())
                 .next(weeklyVisitorsStep())
                 .build();
@@ -60,7 +67,7 @@ public class WeeklyVisitorsJobConfiguration {
         return stepBuilderFactory.get("weeklyVisitorsStep5")
                 .<DailyVisitors, DailyVisitors>chunk(chunkSize)
                 .reader(scheduleItemReader())
-                .writer(ScheduleItemWriter())
+                .writer(scheduleItemWriter())
 //                .tasklet(((stepContribution, chunkContext) -> {
 //                    log.info(">>>>>>>> This is Step1");
 //                    return RepeatStatus.FINISHED;
@@ -80,7 +87,7 @@ public class WeeklyVisitorsJobConfiguration {
     }
 
     @Bean
-    public JpaItemWriter<DailyVisitors> ScheduleItemWriter(){
+    public JpaItemWriter<DailyVisitors> scheduleItemWriter(){
         JpaItemWriter<DailyVisitors> jpaItemWriter = new JpaItemWriter<>();
         jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
         return jpaItemWriter;
